@@ -1,0 +1,12 @@
+{% block content %}
+  <h2>Student Details</h2>
+  <p>Name: {{ student.first_name }} {{ student.last_name }}</p>
+  <p>Date of Birth: {{ student.date_of_birth }}</p>
+  <p>Gender: {{ student.gender }}</p>
+  <p>ContactNumber: {{ student.contact_number }}</p>
+
+  <div>
+    <a href="{ url 'edit_student' }">Edit information</a>
+  </div>
+  
+{% endblock %}

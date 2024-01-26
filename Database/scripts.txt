@@ -1,0 +1,69 @@
+CREATE DATABASE kilimo_high_school;
+USE kilimo_high_school;
+
+CREATE TABLE ClassStreams (
+ClassStreamID INT AUTO_INCREMENT PRIMARY KEY,
+ClassName VARCHAR(10) NOT NULL UNIQUE
+);
+
+CREATE TABLE Students (
+StudentID INT AUTO_INCREMENT PRIMARY KEY,
+Firstname VARCHAR(20) NOT NULL,
+LastName VARCHAR(20) NOT NULL,
+DateOfBirth DATE,
+Gender ENUM('Male', 'Female'),
+Address VARCHAR(50),
+ContactNumber VARCHAR(15),
+ClassStreamID INT,
+FOREIGN KEY (ClassStreamID) REFERENCES ClassStreams(ClassStreamID) ON DELETE SET NULL
+);
+
+#modified classstreams table
+ALTER TABLE ClassStreams
+MODIFY COLUMN ClassName VARCHAR(20);
+
+# adding data to classstreams table
+
+INSERT INTO ClassStreams (ClassName) VALUES
+('Form 1A'),
+('Form 1B'),
+('Form 1C');
+
+#script to view all class streams
+SELECT * FROM ClassStreams;
+
+#Viewing a single class stream
+SELECT * FROM ClassStreams WHERE ClassName = 'Form 1C';
+
+#Capturing students data and assigning a student to a stream
+SET @classStreamID = (SELECT ClassStreamID FROM ClassStreams WHERE ClassName = 'Form 1A');
+
+INSERT INTO Students (FirstName, LastName, DateOfBirth, Gender, Address, ContactNumber, ClassStreamID)
+VALUES
+('Esther', 'Mwangi', '2000-01-20', 'Female', 'Nala Area', '+254707077986', @classStreamID);
+
+#editing students data
+
+UPDATE Students
+SET
+    FirstName = 'Kaka',
+    LastName = 'Yule'
+WHERE
+	FirstName = 'Esther' AND LastName = 'Mwangi';
+
+#script to delete students data
+DELETE FROM Students
+WHERE FirstName = 'Kaka' AND LastName = 'Yule';
+
+View a single student's data
+SELECT * FROM Students
+WHERE FirstName = 'Nayan' AND LastName = 'May' AND DateOfBirth = '2021-01-10';
+
+#script to view all students
+SELECT * FROM Students;
+
+#Script to view students that belong to a particular class stream
+SELECT Students.*, ClassStreams.ClassName
+FROM Students
+JOIN ClassStreams ON Students.ClassStreamID = ClassStreams.ClassStreamID
+WHERE ClassStreams.ClassName = 'Form 1A';
